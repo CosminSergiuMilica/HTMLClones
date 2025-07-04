@@ -1,22 +1,16 @@
 import ssdeep
 
 class MerkelNode:
-    def __init__(self, tag=None, text=None, attrs=None, children=None):
+    def __init__(self, tag=None, text=None, children=None):
         self.tag = tag # debug
-        self.fingerprint = self.__generate_fingerprint(text.strip() if text else "", attrs or {})
+        self.fingerprint = self.__generate_fingerprint(text.strip() if text else "")
         self.children = children or []
         self.is_leaf = len(self.children)==0
         self.hash = self.__compute_hash()
 
-    def __generate_fingerprint(self, text, attributes):
-        attr_repr = ""
-        if "class" in attributes:
-            attr_repr += f" class='{attributes['class']}'"
-        if "id" in attributes:
-            attr_repr += f" id='{attributes['id']}'"
-
+    def __generate_fingerprint(self, text):
         text = " ".join(text.split())
-        return f"<{self.tag}{attr_repr}>{text}"
+        return f"<{self.tag}"
 
     def __compute_hash(self):
         if self.is_leaf:
@@ -38,7 +32,7 @@ def build_merkel_tree(bs_node):
         text = text.strip()
         if not text:
             return None
-        return MerkelNode(tag='__text__', text=text, attrs={})
+        return MerkelNode(tag='__text__', text=text)
 
     children = []
     for child in bs_node.children:
@@ -49,6 +43,5 @@ def build_merkel_tree(bs_node):
     return MerkelNode(
         tag=bs_node.name,
         text='',
-        attrs=bs_node.attrs,
         children=children
     )
