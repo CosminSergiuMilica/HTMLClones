@@ -4,7 +4,7 @@ class MerkelNode:
     def __init__(self, tag=None, text=None, attrs=None, children=None):
         self.tag = tag
         self.attrs = attrs or {}
-        self.text = " ".join(text.strip().split())[:30] if text else ""
+        self.text = " ".join(text.strip().split())[:15] if text else ""
         self.children = children or []
         self.is_leaf = len(self.children) == 0
 
@@ -13,13 +13,16 @@ class MerkelNode:
 
     def __generate_fingerprint(self):
         style = self.attrs.get("style", "")
-        classes = self.attrs.get("class", "")
-        if isinstance(classes, list):
-            classes = " ".join(sorted(classes))
-        elif isinstance(classes, str):
-            classes = " ".join(sorted(classes.split()))
+        class_ = self.attrs.get("class", "")
+        id_ = self.attrs.get("id", "")
 
-        return f"<{self.tag}|text={self.text}|style={style}|class={classes}>"
+        if isinstance(class_, list):
+            class_ = " ".join(sorted(class_))
+        elif isinstance(class_, str):
+            class_ = " ".join(sorted(class_.split()))
+
+        visual_style = ";".join(sorted(style.strip().split(";"))) if style else ""
+        return f"<{self.tag}|id={id_}|class={class_}|style={visual_style}|text={self.text}>"
 
     def __compute_hash(self):
         if self.is_leaf:
