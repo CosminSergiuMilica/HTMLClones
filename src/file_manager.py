@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import cssutils
 from src.MarkelTree import build_merkel_tree
 
-
 VISUAL_ATTRS = {"style", "class"}
 cssutils.log.setLevel('FATAL')
 
@@ -31,7 +30,7 @@ def apply_css_rules(soup: BeautifulSoup, rules: dict):
             continue
 
 def normalize_html(soup: BeautifulSoup) -> BeautifulSoup:
-    tags_to_remove = {"script", "noscript", "link", "meta", "iframe", "svg"}
+    tags_to_remove = {"script", "noscript", "link", "meta"}
     for tag_name in tags_to_remove:
         for tag in soup.find_all(tag_name):
             tag.decompose()
@@ -45,7 +44,6 @@ def normalize_html(soup: BeautifulSoup) -> BeautifulSoup:
             tag.string = " ".join(tag.string.strip().split())
 
     return soup
-
 
 def load_html_files(folder_path):
     html_trees = {}

@@ -48,7 +48,6 @@ def compare_merkel_trees(nodeA, nodeB, path="root", threshold=80):
 
     return diffs, diff_count
 
-
 def group_similar_htmls(html_trees, max_allowed_diffs=3, threshold=80):
     files = list(html_trees.keys())
     visited = set()
