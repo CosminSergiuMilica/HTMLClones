@@ -13,7 +13,7 @@ def compare_merkel_trees(nodeA, nodeB, path="root", threshold=80):
         return diffs, diff_count
 
     fp_sim = fingerprint_similarity(nodeA.fingerprint, nodeB.fingerprint)
-    if fp_sim >= threshold + 10:
+    if fp_sim >= threshold + 5:
         return diffs, diff_count
 
     max_len = max(len(nodeA.children), len(nodeB.children))
@@ -32,7 +32,7 @@ def compare_merkel_trees(nodeA, nodeB, path="root", threshold=80):
             continue
 
         child_fp_sim = fingerprint_similarity(childA.fingerprint, childB.fingerprint)
-        if child_fp_sim >= threshold + 10:
+        if child_fp_sim >= threshold + 5:
             continue
 
         if childA.children or childB.children:
